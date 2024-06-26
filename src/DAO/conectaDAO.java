@@ -1,3 +1,5 @@
+package DAO;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,11 +23,9 @@ public class conectaDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/lojadb", "root", "amadafoca1");
-            System.out.println(conn);
             return conn;
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("Erro ao conectar: " + ex.getMessage());
-            System.out.println(conn);
             return conn;
 
         }
