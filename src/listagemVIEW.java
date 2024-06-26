@@ -6,19 +6,20 @@ import javax.swing.table.DefaultTableModel;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Adm
  */
 public class listagemVIEW extends javax.swing.JFrame {
 
+    ProdutosDAO prod = new ProdutosDAO();
+
     /**
      * Creates new form listagemVIEW
      */
     public listagemVIEW() {
         initComponents();
-        listarProdutos();
+        preencherTabela(prod.listarProdutos());
     }
 
     /**
@@ -137,11 +138,10 @@ public class listagemVIEW extends javax.swing.JFrame {
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
-        
+
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+
+        prod.listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
@@ -201,25 +201,20 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
-        try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
-            
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
-            }
-        } catch (Exception e) {
+    private void preencherTabela(ArrayList<ProdutosDTO> prod) {
+        String columns[] = {"Id", "Nome", "Valor", "Status"};
+        String dados[][] = new String[prod.size()][columns.length];
+        int i = 0;
+        for (ProdutosDTO p : prod) {
+            dados[i] = new String[]{
+                String.valueOf(p.getId()),
+                p.getNome(),
+                String.valueOf(p.getValor()),
+                p.getStatus()};
+
+            i++;
         }
-    
+        DefaultTableModel model = new DefaultTableModel(dados, columns);
+        listaProdutos.setModel(model);
     }
 }
