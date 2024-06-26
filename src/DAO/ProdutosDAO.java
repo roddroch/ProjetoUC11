@@ -1,3 +1,5 @@
+package DAO;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -46,7 +48,7 @@ public class ProdutosDAO {
         }
     }
 
-    public int cadastrarProduto(ProdutosDTO produto) {;
+    public int cadastrarProduto(ProdutosDTO produto) {
         int status;
         String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ? ,?)";
         try {
@@ -80,6 +82,32 @@ public class ProdutosDAO {
             return e.getErrorCode();
         }
 
+    }
+
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+
+        ArrayList<ProdutosDTO> listaProd = new ArrayList<>();
+        String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+        try {
+            prep = conn.prepareStatement(sql);
+            rs = prep.executeQuery();
+
+            while (rs.next()) {
+                ProdutosDTO prod = new ProdutosDTO();
+                prod.setId(rs.getInt(1));
+                prod.setNome(rs.getString(2));
+                prod.setValor(rs.getInt(3));
+                prod.setStatus(rs.getString(4));
+                listaProd.add(prod);
+
+            }
+            conectadao.desconectar();
+
+            return listaProd;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
 }
