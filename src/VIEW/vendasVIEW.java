@@ -1,21 +1,28 @@
 package VIEW;
 
+import DAO.ProdutosDAO;
+import DAO.ProdutosDTO;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Rod
  */
 public class vendasVIEW extends javax.swing.JFrame {
 
+    ProdutosDAO prod = new ProdutosDAO();
+
     /**
      * Creates new form vendasVIEW
      */
     public vendasVIEW() {
         initComponents();
+        preencherTabela(prod.listarProdutosVendidos());
     }
 
     /**
@@ -62,19 +69,19 @@ public class vendasVIEW extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(161, 161, 161))
             .addGroup(layout.createSequentialGroup()
+                .addGap(229, 229, 229)
+                .addComponent(btnVoltar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(229, 229, 229)
-                        .addComponent(btnVoltar)))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(161, 161, 161))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,7 +100,10 @@ public class vendasVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
+        listagemVIEW lista = new listagemVIEW(); 
+        lista.setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     /**
@@ -137,4 +147,22 @@ public class vendasVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
+
+    private void preencherTabela(ArrayList<ProdutosDTO> prod) {
+        String columns[] = {"Id", "Nome", "Valor", "Status"};
+        String dados[][] = new String[prod.size()][columns.length];
+        int i = 0;
+        for (ProdutosDTO p : prod) {
+            dados[i] = new String[]{
+                String.valueOf(p.getId()),
+                p.getNome(),
+                String.valueOf(p.getValor()),
+                p.getStatus()};
+
+            i++;
+        }
+        DefaultTableModel model = new DefaultTableModel(dados, columns);
+        listaProdutos.setModel(model);
+    }
+
 }
