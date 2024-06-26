@@ -30,7 +30,7 @@ public class ProdutosDAO {
 
             while (rs.next()) {
                 ProdutosDTO prod = new ProdutosDTO();
-                prod.setId(rs.getInt(1)); 
+                prod.setId(rs.getInt(1));
                 prod.setNome(rs.getString(2));
                 prod.setValor(rs.getInt(3));
                 prod.setStatus(rs.getString(4));
@@ -38,15 +38,13 @@ public class ProdutosDAO {
 
             }
             conectadao.desconectar();
-            
+
             return listaProd;
         } catch (Exception e) {
             System.out.println(e);
             return null;
         }
     }
-    
- 
 
     public int cadastrarProduto(ProdutosDTO produto) {;
         int status;
@@ -59,13 +57,29 @@ public class ProdutosDAO {
             prep.setString(3, produto.getStatus());
             status = prep.executeUpdate();
             conectadao.desconectar();
-            System.out.println(status);
             return status;
         } catch (SQLException ex) {
             System.out.println("Erro ao salvar: " + ex.getMessage());
             conectadao.desconectar();
             return ex.getErrorCode();
         }
+    }
+
+    public int venderProduto(int id) {
+        int status;
+        String sql = "UPDATE produtos set status = 'Vendido' WHERE id = ?";
+        try {
+            prep = conn.prepareStatement(sql);
+            prep.setInt(1, id);
+            status = prep.executeUpdate();
+            conectadao.desconectar();
+            return status;
+        } catch (SQLException e) {
+            System.out.println(e);
+            conectadao.desconectar();
+            return e.getErrorCode();
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -137,11 +138,26 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+        ProdutosDAO prod = new ProdutosDAO();
+        
+        String idTXT = id_produto_venda.getText();
+        if (idTXT.isEmpty() || idTXT.isBlank()){
+            JOptionPane.showMessageDialog(null, "Digite o ID do produto que deseja alterar para Vendido");
+        }else{
+           int idInt = Integer.parseInt(idTXT);
+           int status = prod.venderProduto(idInt);
+              if (status == 1){
+         JOptionPane.showMessageDialog(null, "Status definido como vendido");
+        }else{
+            JOptionPane.showMessageDialog(null, "Falha ao atualizar status");
+        }
+        }
 
-        ProdutosDAO produtosdao = new ProdutosDAO();
+        
+     
+        
 
-        prod.listarProdutos();
+
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
